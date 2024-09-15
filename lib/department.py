@@ -76,6 +76,12 @@ class Department:
         CURSOR.execute(sql, (self.id, ))
         CONN.commit()
 
+        # Delete the dictionary entry using id as the key
+        del type(self).all[self.id]
+
+        # Set the id to None
+        self.id = None
+
     @classmethod
     def instance_from_db(cls, row):
         """ Return a Department object having the attribute values from the table row. """
