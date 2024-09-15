@@ -75,3 +75,20 @@ class Department:
 
         CURSOR.execute(sql, (self.id, ))
         CONN.commit()
+
+    @classmethod
+    def instance_from_db(cls, row):
+        """ Return a Department object having the attribute values from the table row. """
+
+        # Check the dictionary for an existing instance using the row's primary key
+        department = cls.all.get(row[0])
+        if department:
+            # ensure attributes match row values in case local object has been modified
+            department.name = row[1]
+            department.location = row[2]
+        else:
+            # not in dictionary, create new instance and add to dictionary
+            department = cls(row[1], row[2])
+            department.id = row[0]
+            cls.all[department.id] = department
+        return department
