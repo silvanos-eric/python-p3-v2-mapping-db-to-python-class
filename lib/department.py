@@ -3,6 +3,8 @@ from __init__ import CURSOR, CONN
 
 class Department:
 
+    all = {}
+
     def __init__(self, name, location, id=None):
         self.id = id
         self.name = name
@@ -45,6 +47,7 @@ class Department:
         CONN.commit()
 
         self.id = CURSOR.lastrowid
+        type(self).all[self.id] = self
 
     @classmethod
     def create(cls, name, location):
@@ -70,5 +73,5 @@ class Department:
             WHERE id = ?
         """
 
-        CURSOR.execute(sql, (self.id,))
+        CURSOR.execute(sql, (self.id, ))
         CONN.commit()
